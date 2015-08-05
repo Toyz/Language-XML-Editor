@@ -8,7 +8,7 @@
                 <DataTemplate>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Text="{Binding Name}" Margin="5"></TextBlock>
-                        <TextBox Text="{Binding Body, Mode=TwoWay}"></TextBox>
+                        <TextBox Text="{Binding Body, Mode=TwoWay}" Background="{Binding BaseColor, Mode=TwoWay}"></TextBox>
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

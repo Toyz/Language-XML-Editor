@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Win32;
@@ -109,6 +110,7 @@ namespace Language_XML_Editor
                 if (s != null)
                 {
                     s.Body = node.Value;
+                    s.BaseColor = !node.Value.Equals(s.Body) ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.White);
                 }
             }
         }

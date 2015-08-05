@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace Language_XML_Editor
 {
@@ -14,6 +10,7 @@ namespace Language_XML_Editor
         {
             private string _name;
             private string _body;
+            private Brush _basecolor;
 
             public string Name
             {
@@ -34,8 +31,22 @@ namespace Language_XML_Editor
                 }
             }
 
+            public Brush BaseColor
+            {
+                get
+                {
+                    return _basecolor;
+                }
+                set
+                {
+                    _basecolor = value;
+                    OnPropertyChanged1();
+                }
+            }
+
             public ListData(string name, string body)
             {
+                _basecolor = new SolidColorBrush(Colors.White);
                 _name = name;
                 _body = body;
             }
