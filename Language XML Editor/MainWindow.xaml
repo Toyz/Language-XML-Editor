@@ -1,0 +1,23 @@
+﻿<Window x:Class="Language_XML_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Language XML Editor" Height="350" Width="525">
+    <Grid>
+        <ListView x:Name="ListViewXml" HorizontalContentAlignment="Stretch" Margin="0,25,0,0">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}" Margin="5"></TextBlock>
+                        <TextBox Text="{Binding Body, Mode=TwoWay}"></TextBox>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Menu Height="25" VerticalAlignment="Top">
+            <MenuItem Header="File" Height="25">
+                <MenuItem Header="_Open Language" Click="MenuOpenItem_OnClick" />
+                <MenuItem Header="_Save Language" Click="MenuSaveItem_OnClick" />
+            </MenuItem>
+        </Menu>
+    </Grid>
+</Window>
