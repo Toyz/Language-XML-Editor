@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -102,16 +103,26 @@ namespace Language_XML_Editor
 
         private void LoadXml(IEnumerable<XElement> elements)
         {
+            List<string> edited = new List<string>();
             foreach (var node in elements)
             {
                 var s =
                     (from current in _listDatas where current.Name.Equals(node.Name.ToString()) select current)
                         .FirstOrDefault();
+
+                Debug.WriteLine(s);
                 if (s != null)
                 {
+                    edited.Add(s.Name);
                     s.Body = node.Value;
-                    s.BaseColor = !node.Value.Equals(s.Body) ? new SolidColorBrush(Colors.Red) : new SolidColorBrush(Colors.White);
+                    s.BaseColor = new SolidColorBrush(Colors.White);
+                        
                 }
+            }
+
+            foreach (var item in _listDatas.Where(item => !edited.Contains(item.Name)))
+            {
+                item.BaseColor = new SolidColorBrush(Colors.LightCoral);
             }
         }
     }

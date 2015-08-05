@@ -6,10 +6,12 @@
         <ListView x:Name="ListViewXml" HorizontalContentAlignment="Stretch" Margin="0,25,0,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="{Binding Name}" Margin="5"></TextBlock>
-                        <TextBox Text="{Binding Body, Mode=TwoWay}" Background="{Binding BaseColor, Mode=TwoWay}"></TextBox>
-                    </StackPanel>
+                    <Border BorderThickness="1" BorderBrush="black" >
+                        <StackPanel Background="{Binding BaseColor, Mode=TwoWay}" Orientation="Vertical">
+                            <TextBlock FontWeight="ExtraBlack" Text="{Binding Name}" Margin="5"></TextBlock>
+                            <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5"></TextBox>
+                        </StackPanel>
+                    </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
