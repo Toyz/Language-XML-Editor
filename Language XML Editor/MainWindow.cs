@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Xml;
@@ -42,8 +43,13 @@ namespace Language_XML_Editor
 
             foreach (var node in xml.Elements())
             {
-                _listDatas.Add(new Models.ListData(node.Name.ToString(), node.Value));
+                var name_s = node.Name.ToString().Split('_');
+                var name_c = string.Join(" ", name_s);
+                name_c = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name_c.ToLower());
+                _listDatas.Add(new Models.ListData(node.Name.ToString(), node.Value, name_c));
             }
+
+            UIElement_OnLostFocus(sender, new RoutedEventArgs());
         }
 
         private void MenuOpenItem_OnClick(object sender, RoutedEventArgs e)
@@ -55,11 +61,9 @@ namespace Language_XML_Editor
                 Multiselect = false
             };
 
-            if (ofd.ShowDialog() == true)
-            {
-                var xml = XElement.Parse(File.ReadAllText(ofd.FileName));
-                LoadXml(xml.Elements());
-            }
+            if (ofd.ShowDialog() != true) return;
+            var xml = XElement.Parse(File.ReadAllText(ofd.FileName));
+            LoadXml(xml.Elements());
         }
 
         private void MenuSaveItem_OnClick(object sender, RoutedEventArgs e)
@@ -72,21 +76,22 @@ namespace Language_XML_Editor
 
             if (sfd.ShowDialog() == true)
             {
-                XmlToString(sfd.FileName);
+                File.WriteAllText(sfd.FileName, XmlToString());
 
                 MessageBox.Show("Created language file", "Done");
             }
         }
 
-        private void XmlToString(string file)
+        private string XmlToString()
         {
+            var sb = new StringBuilder();
             var settings = new XmlWriterSettings
             {
                 Indent = true,
                 NewLineOnAttributes = true
             };
 
-            using (XmlWriter writer = XmlWriter.Create(file, settings))
+            using (XmlWriter writer = XmlWriter.Create(sb, settings))
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Language");
@@ -99,6 +104,8 @@ namespace Language_XML_Editor
                 writer.WriteEndElement();
                 writer.WriteEndDocument();
             }
+
+            return sb.ToString();
         }
 
         private void LoadXml(IEnumerable<XElement> elements)
@@ -124,6 +131,22 @@ namespace Language_XML_Editor
             {
                 item.BaseColor = new SolidColorBrush(Colors.LightCoral);
             }
+        }
+
+        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            var s = string.Empty;
+            Task.Run(() =>
+            {
+                s = XmlToString();
+            }).ContinueWith(_ =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    XMLPreview.Text = s;
+                });
+            });
+
         }
     }
 }

@@ -30,6 +30,9 @@ namespace Language_XML_Editor
                     OnPropertyChanged1();
                 }
             }
+            
+
+            public string TitleCorrect { get; private set; }
 
             public Brush BaseColor
             {
@@ -44,11 +47,12 @@ namespace Language_XML_Editor
                 }
             }
 
-            public ListData(string name, string body)
+            public ListData(string name, string body, string correctTitle)
             {
                 _basecolor = new SolidColorBrush(Colors.White);
                 _name = name;
                 _body = body;
+                TitleCorrect = correctTitle;
             }
 
             public event PropertyChangedEventHandler PropertyChanged;

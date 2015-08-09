@@ -3,23 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Language XML Editor" Height="350" Width="525">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="259*"/>
+            <ColumnDefinition Width="258*"/>
+        </Grid.ColumnDefinitions>
         <ListView x:Name="ListViewXml" HorizontalContentAlignment="Stretch" Margin="0,25,0,0" KeyboardNavigation.TabNavigation="Cycle">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border BorderThickness="1" BorderBrush="black" >
                         <StackPanel Background="{Binding BaseColor, Mode=TwoWay}" Orientation="Vertical">
-                            <TextBlock FontWeight="ExtraBlack" Text="{Binding Name}" Margin="5"></TextBlock>
-                            <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5"></TextBox>
+                            <TextBlock FontWeight="ExtraBlack" Text="{Binding TitleCorrect}" Margin="5"></TextBlock>
+                            <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5" LostFocus="UIElement_OnLostFocus"></TextBox>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Menu Height="25" VerticalAlignment="Top">
+        <Menu Height="25" VerticalAlignment="Top" Grid.ColumnSpan="2">
             <MenuItem Header="_File" Height="25">
                 <MenuItem Header="_Open Language" Click="MenuOpenItem_OnClick" />
                 <MenuItem Header="_Save Language" Click="MenuSaveItem_OnClick" />
             </MenuItem>
         </Menu>
+        <RichTextBox Margin="5,25,0,0" Grid.Column="1">
+            <FlowDocument>
+                <Paragraph>
+                    <Run x:Name="XMLPreview"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
     </Grid>
 </Window>
