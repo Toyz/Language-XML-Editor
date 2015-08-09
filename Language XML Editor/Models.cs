@@ -10,7 +10,9 @@ namespace Language_XML_Editor
         {
             private string _name;
             private string _body;
+            private string _orginal;
             private Brush _basecolor;
+
 
             public string Name
             {
@@ -29,6 +31,11 @@ namespace Language_XML_Editor
                     _body = value;
                     OnPropertyChanged1();
                 }
+            }
+
+            public string Orginal
+            {
+                get { return _orginal; }
             }
             
 
@@ -52,6 +59,7 @@ namespace Language_XML_Editor
                 _basecolor = new SolidColorBrush(Colors.White);
                 _name = name;
                 _body = body;
+                _orginal = Orginal;
                 TitleCorrect = correctTitle;
             }
 
