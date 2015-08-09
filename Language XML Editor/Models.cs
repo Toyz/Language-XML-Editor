@@ -39,7 +39,7 @@ namespace Language_XML_Editor
             }
             
 
-            public string TitleCorrect { get; private set; }
+            public string TitleCorrect { get; set; }
 
             public Brush BaseColor
             {

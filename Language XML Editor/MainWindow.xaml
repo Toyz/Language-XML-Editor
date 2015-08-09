@@ -12,7 +12,7 @@
                 <DataTemplate>
                     <Border BorderThickness="1" BorderBrush="black">
                         <StackPanel Background="{Binding BaseColor, Mode=TwoWay}" Orientation="Vertical">
-                            <TextBlock FontWeight="ExtraBlack" Text="{Binding Name}" Margin="5"></TextBlock>
+                            <TextBlock FontWeight="ExtraBlack" Text="{Binding TitleCorrect}" Margin="5"></TextBlock>
                             <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"></TextBox>
                         </StackPanel>
                     </Border>

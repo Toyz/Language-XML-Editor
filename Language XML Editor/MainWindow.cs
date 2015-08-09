@@ -152,13 +152,15 @@ namespace Language_XML_Editor
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
+            Debug.WriteLine("Got fucus?");
+
             TextBox tbxCurrent = sender as TextBox;
             TextBlock tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
-            List<Models.ListData> mldCurrentValue = _listDatas.Where(x => x.Name.Equals(tbkTitle.Text)).ToList();
+            List<Models.ListData> mldCurrentValue = _listDatas.Where(x => x.TitleCorrect.Equals(tbkTitle.Text)).ToList();
 
             if (mldCurrentValue.Count > 0)
             {
-                string sNewTitle = mldCurrentValue[0].Name + " : " + mldCurrentValue[0].Body;
+                string sNewTitle = mldCurrentValue[0].TitleCorrect + " : " + mldCurrentValue[0].Body;
                 tbkTitle.Text = sNewTitle;
                 tbxCurrent.Text = string.Empty;
             }
@@ -177,7 +179,7 @@ namespace Language_XML_Editor
                 {
                     tbkTitle.Text = sTitleAndValue[0];
                     tbxCurrent.Text = sTitleAndValue[1];
-                    _listDatas.Where(x => x.Name.Equals(tbkTitle.Text)).ToList()[0].Body = sTitleAndValue[1];
+                    _listDatas.Where(x => x.TitleCorrect.Equals(tbkTitle.Text)).ToList()[0].Body = sTitleAndValue[1];
                 }
             }
 
