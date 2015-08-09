@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.Win32;
+using System.Windows.Controls;
 
 namespace Language_XML_Editor
 {
@@ -62,9 +63,9 @@ namespace Language_XML_Editor
             };
 
             if (ofd.ShowDialog() != true) return;
-            var xml = XElement.Parse(File.ReadAllText(ofd.FileName));
-            LoadXml(xml.Elements());
-        }
+                var xml = XElement.Parse(File.ReadAllText(ofd.FileName));
+                LoadXml(xml.Elements());
+            }
 
         private void MenuSaveItem_OnClick(object sender, RoutedEventArgs e)
         {
@@ -148,5 +149,41 @@ namespace Language_XML_Editor
             });
 
         }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tbxCurrent = sender as TextBox;
+            TextBlock tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
+            List<Models.ListData> mldCurrentValue = _listDatas.Where(x => x.Name.Equals(tbkTitle.Text)).ToList();
+
+            if (mldCurrentValue.Count > 0)
+            {
+                string sNewTitle = mldCurrentValue[0].Name + " : " + mldCurrentValue[0].Body;
+                tbkTitle.Text = sNewTitle;
+                tbxCurrent.Text = string.Empty;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tbxCurrent = sender as TextBox;
+
+            if (tbxCurrent.Text == string.Empty)
+            {
+                TextBlock tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
+                string[] sSpliters = { " : " };
+                string[] sTitleAndValue = tbkTitle.Text.Split(sSpliters, StringSplitOptions.RemoveEmptyEntries);
+                if (sTitleAndValue.Length > 1)
+                {
+                    tbkTitle.Text = sTitleAndValue[0];
+                    tbxCurrent.Text = sTitleAndValue[1];
+                    _listDatas.Where(x => x.Name.Equals(tbkTitle.Text)).ToList()[0].Body = sTitleAndValue[1];
+                }
+            }
+
+            // Calling Toyz LostFocus function
+            UIElement_OnLostFocus(sender, e);
+        }
     }
 }
+///////

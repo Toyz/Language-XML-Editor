@@ -10,10 +10,10 @@
         <ListView x:Name="ListViewXml" HorizontalContentAlignment="Stretch" Margin="0,25,0,0" KeyboardNavigation.TabNavigation="Cycle">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="1" BorderBrush="black" >
+                    <Border BorderThickness="1" BorderBrush="black">
                         <StackPanel Background="{Binding BaseColor, Mode=TwoWay}" Orientation="Vertical">
-                            <TextBlock FontWeight="ExtraBlack" Text="{Binding TitleCorrect}" Margin="5"></TextBlock>
-                            <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5" LostFocus="UIElement_OnLostFocus"></TextBox>
+                            <TextBlock FontWeight="ExtraBlack" Text="{Binding Name}" Margin="5"></TextBlock>
+                            <TextBox Text="{Binding Body, Mode=TwoWay}" Margin="5" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"></TextBox>
                         </StackPanel>
                     </Border>
                 </DataTemplate>
