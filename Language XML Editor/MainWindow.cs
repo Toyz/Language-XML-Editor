@@ -44,13 +44,13 @@ namespace Language_XML_Editor
 
             foreach (var node in xml.Elements())
             {
-                var name_s = node.Name.ToString().Split('_');
-                var name_c = string.Join(" ", name_s);
-                name_c = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(name_c.ToLower());
-                _listDatas.Add(new Models.ListData(node.Name.ToString(), node.Value, name_c));
+                var nameS = node.Name.ToString().Split('_');
+                var nameC = string.Join(" ", nameS);
+                nameC = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(nameC.ToLower());
+                _listDatas.Add(new Models.ListData(node.Name.ToString(), node.Value, nameC));
             }
 
-            UIElement_OnLostFocus(sender, new RoutedEventArgs());
+            PreivewXmlFunction();
         }
 
         private void MenuOpenItem_OnClick(object sender, RoutedEventArgs e)
@@ -134,7 +134,7 @@ namespace Language_XML_Editor
             }
         }
 
-        private void UIElement_OnLostFocus(object sender, RoutedEventArgs e)
+        private void PreivewXmlFunction()
         {
             var s = string.Empty;
             Task.Run(() =>
@@ -154,37 +154,39 @@ namespace Language_XML_Editor
         {
             Debug.WriteLine("Got fucus?");
 
-            TextBox tbxCurrent = sender as TextBox;
-            TextBlock tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
-            List<Models.ListData> mldCurrentValue = _listDatas.Where(x => x.TitleCorrect.Equals(tbkTitle.Text)).ToList();
+            var tbxCurrent = sender as TextBox;
+            if (tbxCurrent == null) return;
+            var tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
+            var mldCurrentValue = _listDatas.Where(x => tbkTitle != null && x.TitleCorrect.Equals(tbkTitle.Text)).ToList();
 
-            if (mldCurrentValue.Count > 0)
-            {
-                string sNewTitle = mldCurrentValue[0].TitleCorrect + " : " + mldCurrentValue[0].Body;
-                tbkTitle.Text = sNewTitle;
-                tbxCurrent.Text = string.Empty;
-            }
+            if (mldCurrentValue.Count <= 0) return;
+            var sNewTitle = mldCurrentValue[0].TitleCorrect + " : " + mldCurrentValue[0].Body;
+            if (tbkTitle != null) tbkTitle.Text = sNewTitle;
+            tbxCurrent.Text = string.Empty;
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tbxCurrent = sender as TextBox;
+            var tbxCurrent = sender as TextBox;
 
-            if (tbxCurrent.Text == string.Empty)
+            if (tbxCurrent != null && tbxCurrent.Text == string.Empty)
             {
-                TextBlock tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
+                var tbkTitle = ((StackPanel)(tbxCurrent.Parent)).Children[0] as TextBlock;
                 string[] sSpliters = { " : " };
-                string[] sTitleAndValue = tbkTitle.Text.Split(sSpliters, StringSplitOptions.RemoveEmptyEntries);
-                if (sTitleAndValue.Length > 1)
+                if (tbkTitle != null)
                 {
-                    tbkTitle.Text = sTitleAndValue[0];
-                    tbxCurrent.Text = sTitleAndValue[1];
-                    _listDatas.Where(x => x.TitleCorrect.Equals(tbkTitle.Text)).ToList()[0].Body = sTitleAndValue[1];
+                    var sTitleAndValue = tbkTitle.Text.Split(sSpliters, StringSplitOptions.RemoveEmptyEntries);
+                    if (sTitleAndValue.Length > 1)
+                    {
+                        tbkTitle.Text = sTitleAndValue[0];
+                        tbxCurrent.Text = sTitleAndValue[1];
+                        _listDatas.Where(x => x.TitleCorrect.Equals(tbkTitle.Text)).ToList()[0].Body = sTitleAndValue[1];
+                    }
                 }
             }
 
             // Calling Toyz LostFocus function
-            UIElement_OnLostFocus(sender, e);
+            PreivewXmlFunction();
         }
     }
 }
